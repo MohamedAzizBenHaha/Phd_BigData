@@ -1,0 +1,7 @@
+Flask
+pymongo
+bcrypt
+plotly
+requests
+kafka-python
+geocoder==1.38.1

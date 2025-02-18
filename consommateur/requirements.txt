@@ -1,0 +1,7 @@
+Flask
+pymongo
+bcrypt
+plotly
+requests
+kafka-python
+

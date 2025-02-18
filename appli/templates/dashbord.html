@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dashboard weather Mood API</title>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+	input[type=text] {
+		padding:5px; 
+		border:2px solid yellow; 
+		-webkit-border-radius: 5px;
+		border-radius: 5px;
+	}
+	
+	input[type=text]:focus {
+		border-color:cornflowerblue;
+	
+	}
+	
+	input[type=submit] {
+		padding:5px 15px; 
+		background:#ccc; 
+		border:0 none;
+		cursor:pointer;
+		-webkit-border-radius: 5px;
+		border-radius: 5px; 
+		animation: 1.5s ease infinite alternate running shimmer;
+		background: linear-gradient(90deg, #FFE27D 0%, #b7ddf7 30%,  );
+		background-size: 100% 100%;
+		border: none;
+		border-radius: 6px;
+		box-shadow: -2px -2px 10px rgba(255, 227, 126, 0.5), 2px 2px 10px ;
+		color: #170F1E;
+		cursor: pointer;
+		font-family: 'Inter', sans-serif;
+		font-size: 16px;
+		font-weight: 670;
+		line-height: 24px;
+		overflow: hidden;
+		padding: 12px 24px;
+		position: relative;
+		text-decoration: none;
+		transition: 0.2s;
+		
+	}
+	.submit{ 
+		animation: 1.5s ease infinite alternate running shimmer;
+	   
+		background-color: #FFE27D;
+		background-size: 100% 100%;
+		border: none;
+		border-radius: 6px;
+		box-shadow: -2px -2px 10px rgba(255, 227, 126, 0.5) ;
+		color: #170F1E;
+		cursor: pointer;
+		font-family: 'Inter', sans-serif;
+		font-size: 16px;
+		font-weight: 670;
+		line-height: 24px;
+		overflow: hidden;
+		padding: 12px 24px;
+		position: relative;
+		text-decoration: none;
+		transition: 0.2s;
+		margin-left: 30%;
+	}
+	
+	body {
+		background: url('video_bg.jpg') no-repeat center center fixed;
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+	}
+	.btn{
+		
+			
+		
+		animation: 1.5s ease infinite alternate running shimmer;
+		background: linear-gradient(90deg, #FFE27D 50%,  #b7ddf7 20%);
+		background-size: 100% 100%;
+		border: none;
+		border-radius: 6px;
+		box-shadow: -2px -2px 10px rgba(255, 227, 126, 0.5) ;
+		color: #170F1E;
+		cursor: pointer;
+		font-family: 'Inter', sans-serif;
+		font-size: 16px;
+		font-weight: 670;
+		line-height: 24px;
+		overflow: hidden;
+		padding: 12px 24px;
+		position: relative;
+		text-decoration: none;
+		transition: 0.2s;
+		
+		
+		
+	
+	}
+	
+	
+			svg {
+			  left: -20px;
+			  opacity: 0.5;
+			  position: absolute;
+			  top: -2px;
+			  transition: 0.5s cubic-bezier(.5,-0.5,.5,1.5);
+			}
+			
+			:hover svg {
+			  opacity: 0.8;
+			  transform: translateX(50px) scale(1.5);
+			}
+			
+			
+		  
+		  
+		  
+		  @keyframes shimmer {
+			to {
+			  background-size: 50% 50%;
+			  box-shadow: -2px -2px 6px rgba(255, 227, 126, 0.5), 2px 2px 6px rgba(144, 148, 255, 0.5);
+			}
+		}
+	
+	
+	#bgvid {
+		position: fixed;
+		top: 0;
+		left: 0;
+		min-width: 100%;
+		min-height: 100%;
+		width: auto;
+		height: auto;
+		z-index: -100;
+	}
+	.hero {
+		background-color: #4f7b9e;
+	}
+	.tite{
+	   
+		color: white;
+		
+		font-size: 2rem; /* Taille de police */
+	  font-weight: bold; /* Épaisseur de police */ /* Couleur du texte */
+	  text-align: center; /* Alignement du texte */
+	  margin-top: 1rem; /* Marge supérieure */
+	  margin-bottom: 2rem; /* Marge inférieure */
+	  text-transform: uppercase; /* Transforme le texte en majuscules */
+	  letter-spacing: 0.1em; 
+	  margin-left: 2%;
+	  font-family : American Typewriter, serif;
+	}
+	.titre{
+   
+		color: white;
+		
+		font-size: 2rem; /* Taille de police */
+	  font-weight: bold; /* Épaisseur de police */ /* Couleur du texte */
+	  
+	  
+	  text-transform: uppercase; /* Transforme le texte en majuscules */
+	  letter-spacing: 0.1em; 
+	
+	  font-family : American Typewriter, serif;
+	}
+	
+.container{
+    position:relative;
+   
+    display:block;
+    margin-bottom:80px;
+    width:800px;
+    height:400px;
+    background:#fff;
+    border-radius:5px;
+    overflow:hidden;
+    z-index:1;
+  }
+  
+	.flex{
+		display: flex;
+	}
+	.btns{
+		margin-left: 5%;
+		margin-top: 1%; 
+		justify-content: space-between;
+	}
+	.data{
+	  font-family: URW Chancery L, cursive ; /* Police de caractères */
+	  font-size: 1.2rem; /* Taille de police */
+	  color: #333; /* Couleur du texte */
+	  line-height: 1.5; /* Hauteur de ligne */
+	  margin: 1.5rem 0; /* Marges supérieure et inférieure */
+	  text-align: justify; /* Alignement du texte */
+	
+	}
+	
+	</style>
+</head>
+
+
+<body>
+	<video autoplay loop muted poster="video_bg.jpg" id="bgvid">
+        <source src="https://thumbs.gfycat.com/ShrillUnevenAfricancivet-mobile.mp4" type="video/mp4">
+      
+    </video>
+    <section class="hero " >
+        <div class="hero-body">
+            <div  class="flex" >
+                <img src="https://www.pinclipart.com/picdir/big/123-1239491_free-png-clouds-sun-and-rain-drops-weather.png"style=" margin-left: 5%; display: flex ; width:8%; height:8%; ">
+               
+                <h1 class="tite" >
+                    Welcome To Weather Mood Dashboard
+                </h1> 
+			</div>
+		</div>
+	</section>
+
+
+	<section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-12">
+                    <div class="box">
+                        <article class="media">
+                            <div class="media-left">
+                                <figure class="image">
+                                    <img src="/static/images/Onboarding-cuate.png" onclick="location.href='http://127.0.0.1:5000'" style = "width:300px; max-height:450px" alt="Image">
+                                </figure>
+                            </div>
+
+
+							<div class="media-content">
+                                <div class="content">
+                                    <div class="container">
+                                <div class="row">	
+
+					<h1 class="titre" >Dashboard</h1>
+					<h2>Welcome {{ session['username'] }}</h2>
+					<p>Country : {{ session['country'] }}</p>
+					<a href="/graph">View graphics</a>
+				</body>
+				</html>
+

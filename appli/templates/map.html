@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Weather Mood API Map </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
+</head>
+<title>Center align button</title>
+<style>
+input[type=text] {
+  border-color:#333;
+}
+input[type=submit] {
+    padding:5px 15px; 
+    background:#ccc; 
+    border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+}
+
+.button2 {
+  animation: 1.5s ease infinite alternate running shimmer;
+   
+  background-color: #FFE27D;
+  background-size: 100% 100%;
+  border: none;
+  border-radius: 6px;
+  box-shadow: -2px -2px 10px rgba(255, 227, 126, 0.5) ;
+  color: #170F1E;
+  cursor: pointer;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  margin-left: 5%;
+  line-height: 24px;
+  overflow: hidden;
+  padding: 12px 24px;
+  position: relative;
+ 
+  transition: 0.2s;
+  text-transform: uppercase;
+  
+}
+
+.btn{ 
+  animation: 1.5s ease infinite alternate running shimmer;
+  background: linear-gradient(90deg, #FFE27D 50%,  #b7ddf7 20%);
+  background-size: 60% 60%;
+  border: none;
+  border-radius: 6px;
+  box-shadow: -2px -2px 8px rgba(255, 227, 126, 0.5) ;
+  color: #170F1E;
+  cursor: pointer;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px;
+  font-style: italic;
+  line-height: 22px;
+  overflow: hidden;
+ 
+  text-transform: capitalize;
+  margin-left: 5%;
+  
+
+}
+
+
+      svg {
+        left: -20px;
+        opacity: 0.5;
+        position: absolute;
+        top: -2px;
+        transition: 0.5s cubic-bezier(.5,-0.5,.5,1.5);
+      }
+      
+      :hover svg {
+        opacity: 0.8;
+        transform: translateX(50px) scale(1.5);
+      }
+      
+      
+    
+    
+    
+    @keyframes shimmer {
+      to {
+        background-size: 50% 50%;
+        box-shadow: -2px -2px 6px rgba(255, 227, 126, 0.5), 2px 2px 6px rgba(144, 148, 255, 0.5);
+      }
+  }
+.button2:hover {
+  background-color:  #b7ddf7;
+  color: white;
+}
+.email,
+.pwd{
+  position:relative;
+  z-index:1;
+  border-bottom:1px solid rgba(0,0,0,.1);
+  margin-left: 20%;
+  font-family: 'Open Sans', sans-serif;
+  text-transform:uppercase;
+  color:#858585;
+  font-weight:lighter;
+  -webkit-transition:.5s;
+  transition:.5s;
+}
+
+#map {
+        height: 400px;
+        width: 100%;
+      }
+      .flex{
+        display: flex;
+        
+    }
+    .hero {
+        background-color: #4f7b9e;
+    }
+    #bgvid {
+        position: fixed;
+        top: 0;
+        left: 0;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        z-index: -100;
+    }
+    .titre{
+   
+      color: white;
+      
+      font-size: 2rem; /* Taille de police */
+    font-weight: bold; /* Épaisseur de police */ /* Couleur du texte */
+    
+    
+    text-transform: uppercase; /* Transforme le texte en majuscules */
+    letter-spacing: 0.1em; 
+   margin-left: 10%;
+    font-family : American Typewriter, serif;
+  }
+    .tite{
+       
+        color: white;
+        
+        font-size: 2rem; /* Taille de police */
+      font-weight: bold; /* Épaisseur de police */ /* Couleur du texte */
+      text-align: center; /* Alignement du texte */
+      margin-top: 1rem; /* Marge supérieure */
+      margin-bottom: 2rem; /* Marge inférieure */
+      text-transform: uppercase; /* Transforme le texte en majuscules */
+      letter-spacing: 0.1em; 
+      margin-left: 2%;
+      font-family : American Typewriter, serif;
+    }
+    .container{
+      position:relative;
+     
+      display:block;
+      margin-bottom:80px;
+      width:1500px;
+      height:1000px;
+      background:#fff;
+      border-radius:5px;
+      overflow:hidden;
+      z-index:1;
+    }
+    
+  
+
+    .titre{
+       
+        color: white;
+        
+        font-size: 2rem; /* Taille de police */
+      font-weight: bold; /* Épaisseur de police */ /* Couleur du texte */
+      margin-left: 20%;
+      
+      text-transform: uppercase; /* Transforme le texte en majuscules */
+      letter-spacing: 0.1em; 
+    
+      font-family : American Typewriter, serif;
+    }
+    body {
+        background: url('video_bg.jpg') no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+    input{
+      
+      padding-top:5px;
+      justify-content:space-around;
+      border:none; }
+  
+      placeholder{
+        -webkit-transform:translateY(0px);
+          transform:translateY(0px);
+        -webkit-transition:.5s;
+          transition:.5s;
+      }
+</style>
+</head>
+  <body>
+    <video autoplay loop muted poster="video_bg.jpg" id="bgvid">
+      <source src="https://thumbs.gfycat.com/ShrillUnevenAfricancivet-mobile.mp4" type="video/mp4">
+  </video>
+  <section class="hero " >
+      <div class="hero-body">
+          <div  class="flex" >
+              <img src="https://www.pinclipart.com/picdir/big/123-1239491_free-png-clouds-sun-and-rain-drops-weather.png" onclick="location.href='http://127.0.0.1:5000'"style=" margin-left: 5%; display: flex ; width:8%; height:8%; ">
+             <!-- https://thumbs.gfycat.com/RapidDimEider.webp" alt="giiiiiiiiiiiif"--> 
+              <h1 class="tite" >
+                  Welcome To Weather Mood Dashboard
+              </h1> 
+              <button  class="btn" onclick="window.location.href='/historique'">
+                Consult the history of your country<svg width="80" height="30" viewBox="0 0 79 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g filter="url(#filter0_f_618_1123)">
+                  <path d="M42.9 2H76.5L34.5 44H2L42.9 2Z" fill="url(#paint0_linear_618_1123)"/>
+                </g>
+                <defs>
+                  <filter id="filter0_f_618_1123" x="0" y="0" width="78.5" height="46" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                    <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+                    <feGaussianBlur stdDeviation="1" result="effect1_foregroundBlur_618_1123"/>
+                  </filter>
+                  <linearGradient id="paint0_linear_618_1123" x1="76.5" y1="2.00002" x2="34.5" y2="44" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="white" stop-opacity="0.6"/>
+                    <stop offset="1" stop-color="white" stop-opacity="0.05"/>
+                  </linearGradient>
+                </defs></svg></button>  
+          </div>
+      </div>
+  </section>
+
+
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-12">
+                    <div class="box">
+                        <article class="media">
+                            <div class="media-left">
+                                <figure class="image">
+                                    <img src="/static/images/Windy day-amico.png" style = "width:200px; max-height:350px" alt="Image">
+                                </figure>
+                            </div>
+                         <div class="media-content">
+                                <div class="content">
+                                  <div class="container">
+                                <div class="row">
+                                  
+                                  <h2 class="titre">Welcome {{ session['username'] }}</h2> 
+                                  <img src="https://cdn-icons-png.flaticon.com/512/4400/4400629.png"  onclick="location.href="'http://127.0.0.1:5000'" style = "width:30px; max-height:30px; margin-left:70%" />
+                                 
+    <h3 class="titre">Local weather search</h3>
+
+    <form id="search-form">
+     <div class="flex">
+      <input type="text" id="city" class="email"  placeholder="Enter Your City " name="city">
+      <button  class="button button2" type="submit">search</button>
+    </div>
+      <br> 
+      
+      <input type="text" id="temperatur" name="temperatur" class="email" readonly>
+     <br>
+      <input type="text" id="humidit" name="humidit" class="email" readonly>
+      <br>
+      <input type="text" id="pressure" name="pressure" class="email" readonly>
+
+    </form>
+    <br>
+    <br>
+  </div>
+
+    <div id="map"></div>
+    <script>
+      var map;
+      var geocoder;
+
+      function initMap() {
+        geocoder = new google.maps.Geocoder();
+        var latlng = new google.maps.LatLng(36.8065, 10.1815);
+        var mapOptions = {
+          zoom: 8,
+          center: latlng
+        }
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+        document.getElementById('search-form').addEventListener('submit', function(event) {
+          event.preventDefault();
+          var city = document.getElementById('city').value;
+          codeAddress(city);
+        });
+      }
+
+      function codeAddress(address) {
+        // Récupérer les données météorologiques de la place recherchée
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/weather?city=" + address, true);
+            xhr.onload = function() {
+              //alert('Geocode was not successful for the following reason: ' + status);
+              if (xhr.status == 200) {
+                //alert('Geocode was not successful for the following reason: ' + status);
+                var data = JSON.parse(xhr.responseText);
+                // Mettre à jour les champs de température et d'humidité
+                document.getElementById('temperatur').value = data.temperatur;
+                document.getElementById('humidit').value = data.humidit;
+                document.getElementById('pressure').value = data.pressure;
+
+              }
+              else {
+            alert('Geocode was not successful for the following reason: ' + status);
+          }
+            }
+            
+            xhr.send();
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBIB53R_43oRwn89gKdQviGr7dcvmWFlU&callback=initMap"
+    async defer></script>
+    <br>
+    <br>
+    
+<table>
+  <tr>
+    <th>Temperature</th>
+    <th>Humidity</th>
+    <th>pressure</th>
+    <th>Latitude</th>
+    <th>Longitude</th>
+  </tr>
+  <tr>
+    <td>{{ temperature }}</td>
+    <td>{{ humidity }}</td>
+    <td>{{ pressure }}</td>
+    <td>{{ latitude }}</td>
+    <td>{{ longitude }}</td>
+  </tr>
+</table>
+
+  </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+   
+  </body>
+</html>
+
+
+
