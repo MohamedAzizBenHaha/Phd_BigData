@@ -34,22 +34,27 @@ def get_weather_data(city):
         response = requests.get(url)
         response.raise_for_status()  # Raise an exception for HTTP errors
         data = response.json()
-        temperature = round(data['main']['temp'], 1)
+        temp = data['main']['temp']
         humidity = data['main']['humidity']
         pressure = data['main']['pressure']
-        description = data['weather'][0]['description']
         latitude = data['coord']['lat']
         longitude = data['coord']['lon']
-        return {
-            "city": city,
-            "temperature": temperature,
-            "humidity": humidity,
-            "pressure": pressure,
-            "description": description,
+        city_name = data['name']  # City name from API response
+
+        now = datetime.utcnow()
+        document = {
+            "city": city_name,
+            "country": city,  # Store the entered city as the country
             "latitude": latitude,
             "longitude": longitude,
-            "date": datetime.utcnow()
+            "temp": temp,
+            "humidity": humidity,
+            "pressure": pressure,
+            "date": now.isoformat()  # Convert datetime to ISO 8601 string
         }
+        collection.insert_one(document)  # Save to MongoDB
+        producer.send('weather', document)  # Send to Kafka
+        return document
     except Exception as e:
         print(f"Error fetching weather data for {city}: {e}")
         return None
@@ -59,22 +64,26 @@ def get_weather_data(city):
 def home():
     if "username" in session:
         username = session["username"]
-        user = users_collection.find_one({"username": username})
+        user = users_collection.find_one({"email": username})  # Use email to find the user
         if user and "country" in user:
+            # Extract the first country from the list
             country = user["country"][0] if isinstance(user["country"], list) else user["country"]
+
+            # Fetch weather data for the user's country
             weather_data = get_weather_data(country)
             if weather_data:
-                # Save weather data to MongoDB
-                weather_collection.insert_one(weather_data)
-                # Send weather data to Kafka
-                producer.send('weather', weather_data)
                 return render_template(
                     'home.html',
-                    weather_data=weather_data,
-                    username=username,
-                    country=country
+                    temperature=weather_data['temp'],
+                    humidity=weather_data['humidity'],
+                    pressure=weather_data['pressure'],
+                    city=weather_data['city'],
+                    latitude=weather_data['latitude'],
+                    longitude=weather_data['longitude']
                 )
-        return render_template("home.html", weather_data=None, username=username, country=None)
+            else:
+                return "Error fetching weather data for your location."
+        return "No country information available for your account."
     else:
         return redirect(url_for("login"))
         
