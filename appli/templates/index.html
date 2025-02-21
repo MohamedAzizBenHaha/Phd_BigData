@@ -4,29 +4,98 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Mood Dashboard</title>
+    <!-- Add your CSS styles here -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .weather-info {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        .weather-info p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+        .error-message {
+            color: red;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 10px;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
 </head>
 <body>
     <h1>Welcome to Weather Mood Dashboard</h1>
     <form action="/" method="POST">
         <label for="cityName">City Name:</label>
-        <input type="text" id="cityName" name="cityName" required>
+        <input type="text" id="cityName" name="cityName" placeholder="Enter city name" required>
         <button type="submit">Find</button>
     </form>
 
     {% if error %}
-        <p style="color: red;">City not found. Please try again.</p>
+        <p class="error-message">City not found. Please try again.</p>
     {% endif %}
 
     {% if cityweather.cityname %}
-        <h2>City: {{ cityweather.cityname }}</h2>
-        <p>Temperature: {{ cityweather.temperature }}°C</p>
-        <p>Humidity: {{ cityweather.humidity }}%</p>
-        <p>Pressure: {{ cityweather.pressure }} hPa</p>
-        <p>Description: {{ cityweather.description }}</p>
-        <p>Latitude: {{ cityweather.lat }}</p>
-        <p>Longitude: {{ cityweather.lon }}</p>
+    <div class="weather-info">
+        <p><strong>City:</strong> {{ cityweather.cityname }}</p>
+        <p><strong>Temperature:</strong> {{ cityweather.temperature }}°C</p>
+        <p><strong>Humidity:</strong> {{ cityweather.humidity }}%</p>
+        <p><strong>Pressure:</strong> {{ cityweather.pressure }} hPa</p>
+        <p><strong>Description:</strong> {{ cityweather.description }}</p>
+        <p><strong>Latitude:</strong> {{ cityweather.lat }}</p>
+        <p><strong>Longitude:</strong> {{ cityweather.lon }}</p>
+    </div>
     {% endif %}
 
-    <p>If you want to be updated with the Weather Mood in your country, <a href="{{ url_for('signup') }}">Sign Up</a> or <a href="{{ url_for('login') }}">Log In</a>.</p>
+    <footer>
+        If you want to be updated with the Weather Mood in your country, <a href="{{ url_for('signup') }}">Sign Up</a> or <a href="{{ url_for('login') }}">Log In</a>.
+    </footer>
 </body>
 </html>
