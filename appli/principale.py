@@ -6,6 +6,7 @@ import requests
 from datetime import datetime, timedelta
 from kafka import KafkaProducer, KafkaConsumer
 import json
+import os
 
 app = Flask(__name__)
 app.secret_key = "mysecretkey"
