@@ -64,7 +64,8 @@ def get_weather_data(city):
 def home():
     if "username" in session:
         username = session["username"]
-        user = users_collection.find_one({"email": username})  # Find user by email
+        # Retrieve the user's document using their email (stored in the session)
+        user = users_collection.find_one({"email": username})  # Use email, not username
         if user and "country" in user:
             # Extract the first country from the list
             country = user["country"][0] if isinstance(user["country"], list) else user["country"]
