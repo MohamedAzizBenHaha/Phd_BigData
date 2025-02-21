@@ -5,8 +5,11 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
-    networks:
-      - default
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "2181"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   kafka:
     image: confluentinc/cp-kafka:latest
@@ -21,8 +24,11 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-    networks:
-      - default
+    healthcheck:
+      test: ["CMD", "kafka-topics", "--bootstrap-server", "kafka:9092", "--list"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   mongodb:
     container_name: mongodb
@@ -31,29 +37,29 @@ services:
       - "27017:27017"
     volumes:
       - /path/to/local/folder1:/data/db
-    networks:
-      - default
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   app:
     build: ./appli
     ports:
       - "5000:5000"
-    networks:
-      - default
+    depends_on:
+      - kafka
+      - mongodb
 
   cons:
     build: ./consommateur
-    networks:
-      - default
 
   prod:
     build: ./producteur
     depends_on:
-      - kafka
-      - mongodb
-    networks:
-      - default
-
-networks:
-  default:
-    driver: bridge
+      zookeeper:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
