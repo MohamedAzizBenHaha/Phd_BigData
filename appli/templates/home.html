@@ -5,24 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
     <style>
         /* Your existing CSS styles here */
     </style>
 </head>
-
 <body>
     <video autoplay loop muted poster="video_bg.jpg" id="bgvid">
         <source src="https://thumbs.gfycat.com/ShrillUnevenAfricancivet-mobile.mp4" type="video/mp4">
     </video>
-    <section class="hero" >
+    <section class="hero">
         <div class="hero-body">
             <div class="flex">
-                <img src="https://www.pinclipart.com/picdir/big/123-1239491_free-png-clouds-sun-and-rain-drops-weather.png" style=" margin-left: 5%; display: flex ; width:8%; height:8%;">
-                <h1 class="tite">
-                    Welcome To Weather Mood Dashboard
-                </h1>
+                <img src="https://www.pinclipart.com/picdir/big/123-1239491_free-png-clouds-sun-and-rain-drops-weather.png" style="margin-left: 5%; display: flex; width:8%; height:8%;">
+                <h1 class="tite">Welcome To Weather Mood Dashboard</h1>
             </div>
         </div>
     </section>
@@ -42,19 +38,17 @@
                             <div class="media-content">
                                 <div class="content">
                                     <h1 class="titre">Dashboard</h1>
-                                    <h2>Welcome {{ username }}</h2>
-                                    {% if weather_data %}
-                                        <p>City: {{ weather_data.city }}</p>
-                                        <p>Temperature: {{ weather_data.temperature }}°C</p>
-                                        <p>Humidity: {{ weather_data.humidity }}%</p>
-                                        <p>Pressure: {{ weather_data.pressure }} hPa</p>
-                                        <p>Description: {{ weather_data.description }}</p>
-                                        <p>Latitude: {{ weather_data.latitude }}</p>
-                                        <p>Longitude: {{ weather_data.longitude }}</p>
+                                    <h2>Welcome {{ session['username'] }}</h2>
+                                    {% if city %}
+                                        <p>City: {{ city }}</p>
+                                        <p>Temperature: {{ temperature }}°C</p>
+                                        <p>Humidity: {{ humidity }}%</p>
+                                        <p>Pressure: {{ pressure }} hPa</p>
+                                        <p>Latitude: {{ latitude }}</p>
+                                        <p>Longitude: {{ longitude }}</p>
                                     {% else %}
                                         <p>No weather data available for your location.</p>
                                     {% endif %}
-                                    <p>Country: {{ country }}</p>
                                     <a href="/graph" class="btn">View Graphics</a>
                                     <a href="/logout" class="btn">Logout</a>
                                 </div>
