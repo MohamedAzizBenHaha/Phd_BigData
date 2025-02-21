@@ -3,7 +3,7 @@ from pymongo import MongoClient
 import bcrypt
 import time
 import requests
-from datetime import datetime, timedelta
+from datetime import datetime
 from kafka import KafkaProducer, KafkaConsumer
 import json
 import os
@@ -37,34 +37,34 @@ def get_weather_data(city):
         temp = data['main']['temp']
         humidity = data['main']['humidity']
         pressure = data['main']['pressure']
+        description = data['weather'][0]['description']
         latitude = data['coord']['lat']
         longitude = data['coord']['lon']
-        city_name = data['name']  # City name from API response
 
-        now = datetime.utcnow()
+        now = datetime.utcnow().isoformat()  # Convert datetime to ISO 8601 string
         document = {
-            "city": city_name,
-            "country": city,  # Store the entered city as the country
+            "city": city,
             "latitude": latitude,
             "longitude": longitude,
             "temp": temp,
             "humidity": humidity,
             "pressure": pressure,
-            "date": now.isoformat()  # Convert datetime to ISO 8601 string
+            "description": description,
+            "date": now
         }
-        collection.insert_one(document)  # Save to MongoDB
+        weather_collection.insert_one(document)  # Save to MongoDB
         producer.send('weather', document)  # Send to Kafka
         return document
     except Exception as e:
         print(f"Error fetching weather data for {city}: {e}")
         return None
 
-# Home route (dashboard)
+# Home route (dashboard for logged-in users)
 @app.route("/home", methods=["GET", "POST"])
 def home():
     if "username" in session:
         username = session["username"]
-        user = users_collection.find_one({"email": username})  # Use email to find the user
+        user = users_collection.find_one({"email": username})  # Find user by email
         if user and "country" in user:
             # Extract the first country from the list
             country = user["country"][0] if isinstance(user["country"], list) else user["country"]
@@ -86,7 +86,7 @@ def home():
         return "No country information available for your account."
     else:
         return redirect(url_for("login"))
-        
+
 # Index route (main page)
 @app.route('/', methods=["GET", "POST"])
 def index():
@@ -95,16 +95,30 @@ def index():
     if request.method == "POST":
         cityName = request.form.get("cityName")
         if cityName:
-            weather_data = get_weather_data(cityName)
-            if weather_data:
+            weather_url = f'https://api.openweathermap.org/data/2.5/weather?q={cityName}&appid={api_key}&units=metric'
+            response = requests.get(weather_url)
+            if response.status_code == 200:
+                x = response.json()
+                y = x["coord"]
+                z = x["main"]
+                a = x["weather"]
+                b = x["sys"]
+                lon = y["lon"]
+                lat = y["lat"]
+                temperature = round(z["temp"], 1)
+                humidity = z["humidity"]
+                pressure = z["pressure"]
+                description = a[0]["description"]
+                country = b["country"]
+
                 cityweather = {
-                    'temperature': str(weather_data['temperature']),
-                    'humidity': str(weather_data['humidity']),
-                    'pressure': str(weather_data['pressure']),
-                    'description': str(weather_data['description']),
-                    'cityname': str(weather_data['city']),
-                    'lat': str(weather_data['latitude']),
-                    'lon': str(weather_data['longitude'])
+                    'lat': str(lat),
+                    'lon': str(lon),
+                    'temperature': str(temperature),
+                    'humidity': str(humidity),
+                    'pressure': str(pressure),
+                    'description': str(description),
+                    'cityname': str(cityName)
                 }
             else:
                 error = 1
@@ -117,7 +131,7 @@ def signup():
         existing_user = users_collection.find_one({"email": request.form["email"]})
         if existing_user is None:
             hashpass = bcrypt.hashpw(request.form["password"].encode("utf-8"), bcrypt.gensalt())
-            country = request.form.getlist("country")
+            country = request.form.getlist("country")  # Get the selected country
             users_collection.insert_one({
                 "username": request.form["username"],
                 "email": request.form["email"],
@@ -142,7 +156,6 @@ def login():
             return "Invalid email or password."
     return render_template("login.html")
 
-# Run the app
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=True, host='0.0.0.0', port=port)
