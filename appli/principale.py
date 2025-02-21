@@ -58,31 +58,26 @@ def get_weather_data(city):
 @app.route("/home", methods=["GET", "POST"])
 def home():
     if "username" in session:
-        if request.method == 'POST':
-            city_name = request.form.get("cityName")
-            if city_name:
-                weather_data = get_weather_data(city_name)
-                if weather_data:
-                    # Save weather data to MongoDB
-                    weather_collection.insert_one(weather_data)
-                    # Send weather data to Kafka
-                    producer.send('weather', weather_data)
-                    return render_template(
-                        'map.html',
-                        temperature=weather_data['temperature'],
-                        humidity=weather_data['humidity'],
-                        pressure=weather_data['pressure'],
-                        latitude=weather_data['latitude'],
-                        longitude=weather_data['longitude'],
-                        city=weather_data['city'],
-                        description=weather_data['description']
-                    )
-                else:
-                    return "Error fetching weather data for the specified city."
-        return render_template("home.html")  # Render the form to enter the city name
+        username = session["username"]
+        user = users_collection.find_one({"username": username})
+        if user and "country" in user:
+            country = user["country"][0] if isinstance(user["country"], list) else user["country"]
+            weather_data = get_weather_data(country)
+            if weather_data:
+                # Save weather data to MongoDB
+                weather_collection.insert_one(weather_data)
+                # Send weather data to Kafka
+                producer.send('weather', weather_data)
+                return render_template(
+                    'home.html',
+                    weather_data=weather_data,
+                    username=username,
+                    country=country
+                )
+        return render_template("home.html", weather_data=None, username=username, country=None)
     else:
         return redirect(url_for("login"))
-
+        
 # Index route (main page)
 @app.route('/', methods=["GET", "POST"])
 def index():
